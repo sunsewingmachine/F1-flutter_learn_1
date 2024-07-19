@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_learn_1/main.dart';
 import 'package:provider/provider.dart';
-
-import 'my_home_page.dart';
+import 'my_app_state.dart';
+import 'bigCard.dart';
 
 class GeneratorPage extends StatelessWidget {
   const GeneratorPage({super.key});
