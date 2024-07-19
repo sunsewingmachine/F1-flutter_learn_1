@@ -1,101 +1,44 @@
 import 'package:flutter/material.dart';
-
-void main() => runApp(const Bard1());
+import 'package:provider/provider.dart';
+import 'counter.dart'; // Import the Counter model
 
 class Bard1 extends StatelessWidget {
-  const Bard1({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('AppBar Title: _count'), // This will not update automatically
-          backgroundColor: Colors.blue[300],
-        ),
-        body: BodyContainer(),
-      ),
+    return ChangeNotifierProvider(
+      create: (context) => Counter(),
+      child: MyHomePage1(),
     );
   }
 }
 
-class BodyContainer extends StatefulWidget {
-  const BodyContainer({super.key});
-
-  @override
-  State<BodyContainer> createState() => _BodyContainerState();
-}
-
-class _BodyContainerState extends State<BodyContainer> {
-  int _count = 10;
-
-  void incrementCount() {
-    setState(() {
-      _count++;
-    });
-  }
-
+class MyHomePage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Count in BodyContainer: $_count', style: TextStyle(fontSize: 30)),
-          ElevatedButton(
-            child: const Text('Increment From BodyContainer', style: TextStyle(fontSize: 30)),   
-            onPressed: incrementCount,
-          ),
-          FirstWidget(count: _count, incrementCount: incrementCount),
-          SecondText(count: _count),
-        ],
+    final counter = Provider.of<Counter>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Provider Counter Example'),
       ),
-    );
-  }
-}
-
-class FirstWidget extends StatelessWidget {
-  final int count;
-  final VoidCallback incrementCount;
-
-  const FirstWidget({Key? key, required this.count, required this.incrementCount})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text('Count in First Widget: $count', style: const TextStyle(fontSize: 30)),
-          Text('Count Duplicate in First Widget: $count', style: const TextStyle(fontSize: 30)),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            onPressed: incrementCount,
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-            child: const Text('Increment From FirstWidget', style: TextStyle(fontSize: 30)),   
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('You have pushed the button this many times:'),
+            Text(
+              '${counter.count}',
+              style: Theme.of(context).textTheme.headline4,
             ),
-          ),
-        ],
+            ElevatedButton(
+              onPressed: () {
+                counter.increment();
+              },
+              child: Text('Increment'),
+            ),
+          ],
+        ),
       ),
-    );
-  }
-}
-
-class SecondText extends StatelessWidget {
-  final int count;
-
-  const SecondText({Key? key, required this.count}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Second Count: $count', style: TextStyle(fontSize: 35, color: Color.fromARGB(255, 255, 0, 0))),
     );
   }
 }
